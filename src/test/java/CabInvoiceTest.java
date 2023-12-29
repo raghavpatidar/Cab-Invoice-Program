@@ -46,20 +46,19 @@ public class CabInvoiceTest {
 
     @ParameterizedTest
     @MethodSource("distanceAndTime")
-    public void calculateFareTest(double distance, double time, double expected, RiderType riderType) {
-        Ride ride = new Ride(distance, time, riderType);
+    public void calculateFareTest(Ride ride, double expected) {
         cabInvoice.calculateFare(ride);
         assertEquals(expected, ride.getFare());
     }
 
     private static Stream<Arguments> distanceAndTime() {
         return Stream.of(
-                arguments(0.2, 1, 5.0, RiderType.NORMAL),
-                arguments(20, 50, 250.0, RiderType.NORMAL),
-                arguments(0.1, 1, 5.0, RiderType.NORMAL),
-                arguments(10.0, 20.0, 190.0, RiderType.PREMIUM),
-                arguments(2.0, 10.0, 50.0, RiderType.PREMIUM),
-                arguments(0.1, 1, 20.0, RiderType.PREMIUM));
+                arguments(new Ride(0.2, 1, RiderType.NORMAL), 5.0),
+                arguments(new Ride(20, 50, RiderType.NORMAL), 250.0),
+                arguments(new Ride(0.1, 1, RiderType.NORMAL), 5.0),
+                arguments(new Ride(10.0, 20.0, RiderType.PREMIUM), 190.0),
+                arguments(new Ride(2.0, 10.0, RiderType.PREMIUM), 50.0),
+                arguments(new Ride(0.1, 1, RiderType.PREMIUM), 20.0));
     }
 
     @Test
